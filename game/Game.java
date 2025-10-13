@@ -13,7 +13,7 @@ abstract class Game extends Canvas {
   protected int width, height;
   protected Image buffer;
   
-	public Game(String name, int inWidth, int inHeight) {
+	public Game(String name, int inWidth, int inHeight) {  
 	  width = inWidth;
 	  height = inHeight;
 	  
