@@ -1,10 +1,7 @@
 package game;
 
 /*
-CLASS: Point
-DESCRIPTION: Ah, if only real-life classes were this straight-forward. We'll
-             use 'Point' throughout the program to store and access 
-             coordinates.
+We'll use 'Point' throughout the program to store and access coordinates.
 */
 
 public class Point implements Cloneable {

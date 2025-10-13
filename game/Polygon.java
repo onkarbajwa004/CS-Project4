@@ -71,6 +71,13 @@ class Polygon {
     }
     return crossingNumber%2 == 1;
   }
+    public boolean collides(Polygon other) {
+      // any vertex of A inside B?
+      for (Point p : this.getPoints()) if (other.contains(p)) return true;
+      for (Point p : other.getPoints()) if (this.contains(p)) return true;
+      return false;
+    }
+
   
   public void rotate(int degrees) {rotation = (rotation+degrees)%360;}
   
