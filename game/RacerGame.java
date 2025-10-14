@@ -90,7 +90,7 @@ public class RacerGame extends Game {
         }
     }
 
-    private final ObstacleSpawner spawner = new ObstacleSpawner(60);
+    private final ObstacleSpawner spawner = new ObstacleSpawner(90);
     private final Scoreboard ui = new Scoreboard();
 
     // ctor
