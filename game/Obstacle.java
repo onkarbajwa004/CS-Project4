@@ -1,7 +1,8 @@
 package game;
 
 import java.awt.*;
-public class Obstacle extends Polygon implements Collidable, Updatable{
+
+public class Obstacle extends Polygon implements Collidable{
     private static final int MOVE_SPEED = 3;
 
     /**
@@ -18,7 +19,7 @@ public class Obstacle extends Polygon implements Collidable, Updatable{
      * Move the obstacle upward (negative y direction)
      */
      public void move() {
-        position.y -= MOVE_SPEED;
+        position.y += MOVE_SPEED;
     }
 
     /**
@@ -38,38 +39,4 @@ public class Obstacle extends Polygon implements Collidable, Updatable{
         
         return false;
     }
-
-    /**
-     * Check if obstacle is off screen (above the top)
-     * @param height Height of the game window
-     * @return true if obstacle is completely off screen
-     */
-    public boolean isOffscreen(int height) {
-        return position.y < -50 || position.y > height + 50; //Above or below screen
-    }
-
-    /**
-     * Paint the obstacle on the canvas
-     * @param brush Graphics object for drawing
-     */
-    @Override
-    public void paint(Graphics brush) {
-        Point[] points = this.getPoints();
-        int[] xPoints = new int[points.length];
-        int[] yPoints = new int[points.length];
-        
-        for (int i = 0; i < points.length; i++) {
-            xPoints[i] = (int) points[i].x;
-            yPoints[i] = (int) points[i].y;
-        }
-        
-        // Draw obstacle body
-        brush.setColor(new Color(220, 20, 20)); // Red
-        brush.fillPolygon(xPoints, yPoints, points.length);
-        
-        // Draw outline
-        brush.setColor(new Color(255, 100, 100)); // Light red
-        brush.drawPolygon(xPoints, yPoints, points.length);
-    }
-
 }

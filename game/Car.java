@@ -1,5 +1,6 @@
 package game;
 
+<<<<<<< HEAD
 import java.awt.event.*;
 import java.awt.*;
 
@@ -113,4 +114,70 @@ public class Car extends Polygon implements KeyListener, Updatable, Collidable {
     public void keyTyped(KeyEvent k) {
         // Not used but required by KeyListener interface
     }
+=======
+import java.awt.*;
+import java.awt.event.*;
+
+public class Car extends Polygon implements KeyListener, Updatable {
+    private double stepSize = 2.4;   // pixels per frame (slower)
+    private double rotStep  = 2.5;   // degrees per frame (smoother)
+    private double rotVelocity = 0.0; // for smoothing
+    private boolean forward, left, right;
+
+    public Car(Point[] shape, Point position, double initialRotationDeg) {
+        super(shape, position, initialRotationDeg);
+    }
+
+    @Override
+    public void move() {
+        // smooth rotation velocity
+        if (left)  rotVelocity = -rotStep;
+        else if (right) rotVelocity = rotStep;
+        else rotVelocity *= 0.8; // damping
+        this.rotation += rotVelocity;
+
+        if (forward) {
+            double rad = Math.toRadians(this.rotation);
+            this.position.x += stepSize * Math.cos(rad);
+            this.position.y += stepSize * Math.sin(rad);
+        }
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        Point[] pts = this.getPoints();
+        int n = pts.length;
+        int[] xs = new int[n];
+        int[] ys = new int[n];
+        for (int i = 0; i < n; i++) { xs[i] = (int)Math.round(pts[i].x); ys[i] = (int)Math.round(pts[i].y); }
+        g.setColor(new Color(120,200,120)); // greener car
+        g.fillPolygon(xs, ys, n);
+
+        // heading indicator
+        g.setColor(Color.WHITE);
+        double rad = Math.toRadians(this.rotation);
+        g.drawLine(
+            (int)Math.round(position.x), (int)Math.round(position.y),
+            (int)Math.round(position.x + 20*Math.cos(rad)),
+            (int)Math.round(position.y + 20*Math.sin(rad))
+        );
+    }
+
+    // KeyListener
+    @Override public void keyTyped(KeyEvent e) {}
+    @Override public void keyPressed(KeyEvent e) {
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_W: case KeyEvent.VK_UP:    forward = true; break;
+            case KeyEvent.VK_A: case KeyEvent.VK_LEFT:  left = true;    break;
+            case KeyEvent.VK_D: case KeyEvent.VK_RIGHT: right = true;   break;
+        }
+    }
+    @Override public void keyReleased(KeyEvent e) {
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_W: case KeyEvent.VK_UP:    forward = false; break;
+            case KeyEvent.VK_A: case KeyEvent.VK_LEFT:  left = false;    break;
+            case KeyEvent.VK_D: case KeyEvent.VK_RIGHT: right = false;   break;
+        }
+    }
+>>>>>>> ff855d8 (Gameplay: reset car to top-center on reset)
 }
