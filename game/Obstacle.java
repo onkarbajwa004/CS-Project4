@@ -2,41 +2,42 @@ package game;
 
 import java.awt.*;
 
-public class Obstacle extends Polygon implements Collidable{
-    private static final int MOVE_SPEED = 3;
+class Obstacle extends Polygon implements Updatable {
+    private double speedY = 4.0; // pixels/frame upward
 
-    /**
-     * Constructor for Obstacle object
-     * @param inShape Array of points that define the shape of the car
-     * @param inPosition Starting position
-     * @param inRotation Initial rotation
-     */
-    public Obstacle(Point[] inShape, Point inPosition, double inRotation) {
-        super(inShape, inPosition, inRotation);
+    Obstacle(Point[] shape, Point position, double rotation) {
+        super(shape, position, rotation);
     }
 
-    /**
-     * Move the obstacle upward (negative y direction)
-     */
-     public void move() {
-        position.y += MOVE_SPEED;
-    }
-
-    /**
-     * Check collision with another Polygon
-     * @param other The other polygon to check collision with
-     * @return true if collision is detected
-     */
     @Override
-    public boolean collides(Polygon other) {
-            for (Point p : this.getPoints()) {
-            if (other.contains(p)) return true;
-        }
-     
-        for (Point p : other.getPoints()) {
-            if (this.contains(p)) return true;
-        }
-        
-        return false;
+    public void move() {
+        this.position.y -= speedY;
     }
+
+    public boolean isOffscreen(int screenHeight) {
+        Point[] pts = this.getPoints();
+        double maxY = pts[0].y;
+        for (int i = 1; i < pts.length; i++) {
+            if (pts[i].y > maxY) maxY = pts[i].y;
+        }
+        return maxY < 0;
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        Point[] pts = this.getPoints();
+        int n = pts.length;
+        int[] xs = new int[n];
+        int[] ys = new int[n];
+        for (int i = 0; i < n; i++) {
+            xs[i] = (int) Math.round(pts[i].x);
+            ys[i] = (int) Math.round(pts[i].y);
+        }
+        g.setColor(new Color(220, 70, 70));
+        g.fillPolygon(xs, ys, n);
+    }
+
+    // Optional tuning
+    public void setSpeedY(double v) { speedY = v; }
+    public double getSpeedY() { return speedY; }
 }
